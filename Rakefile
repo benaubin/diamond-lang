@@ -15,7 +15,7 @@ require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://guides.rubygems.org/specification-reference/ for more options
   gem.name = "diamond-lang"
-  gem.homepage = "http://github.com/penne12/diamond-lang"
+  gem.homepage = "http://bensites.com/diamond-lang/"
   gem.license = "MIT"
   gem.summary = "A Ruby Framework for creating Minecraft 1 Command Creations."
   gem.description = "Making Minecraft 1 Command Creations with ruby. It's as easy as `c.say 123`"
