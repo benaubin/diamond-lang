@@ -1,10 +1,6 @@
 #Diamond Lang
 Diamond Lang is a minimal framework for Ruby that compiles into Minecraft One Command Creations.
 
-##Table Of Contents
-
-[toc]
-
 #Installation:
 
 DiamondLang is a Ruby Gem.
@@ -45,13 +41,13 @@ Once you've read that, we'll create a Hello World program that will say "Hello W
 First, we'll include diamond lang, so that we can create a command.
 
 ~~~rb
-require_relative '../diamond_lang' # Requires DiamondLang
+require 'diamond-lang' # Requires DiamondLang
 ~~~
 
 Next, we'll create our command. The name of your command should have no spaces, and the start of each word should be capitalized. So, we'll name our "Hello World" command "HelloWorld". It should also extend (`<`) `DiamondLang::OneCommand`.
 
 ~~~rb
-require_relative '../diamond_lang'
+require 'diamond-lang'
 class HelloWorld < DiamondLang::OneCommand
 end
 ~~~
@@ -59,7 +55,7 @@ end
 To run a command at setup, create a `#setup` method:
 
 ~~~rb
-require_relative '../diamond_lang' # Requires DiamondLang
+require 'diamond-lang'
 class HelloWorld < DiamondLang::OneCommand
   def setup(c)
 
@@ -80,7 +76,7 @@ end
 At the end of the code you wrote, run `{YourCommandName}.create`
 
 ~~~rb
-require_relative '../diamond_lang' # Requires DiamondLang
+require 'diamond-lang'
 class HelloWorld < DiamondLang::OneCommand
   def setup(c)
     c.tell 'penne12', 'it worked!' #=> 'tell penne12 it worked!'
@@ -89,7 +85,7 @@ end
 HelloWorld.create
 ~~~
 
-to run this code  
+to run your code  
 
 ---
 

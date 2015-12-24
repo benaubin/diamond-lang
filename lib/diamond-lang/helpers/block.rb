@@ -7,8 +7,11 @@ module DiamondLang
         @data_value = data_value
         @nbt = nbt
       end
-      def to_s
-        "#{id} #{data_value}#{nbt && " #{nbt.to_json}"}"
+      def to_s(replace_method=nil)
+        [id, data_value, replace_method, nbt.to_json].select{|e| e && e != 'null'}.join(' ')
+      end
+      def to_falling_sand
+        FallingSand.new self
       end
     end
   end

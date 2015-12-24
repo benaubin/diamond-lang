@@ -63,10 +63,10 @@ class HelloWorld < DiamondLang::OneCommand
     c.say "hello world"
   end
   def tick(c)
-    c.test_for s(e: {name: "woof"}) do |c|
+    c.testfor s(e: {name: "woof"}) do |c|
       c.say "<woof> woof"
     end
   end
 end
 
-p HelloWorld.new.to_command
+HelloWorld.create
