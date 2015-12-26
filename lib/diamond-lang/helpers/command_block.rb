@@ -6,10 +6,16 @@ module DiamondLang
         impulse: 'command_block',
         repeat: 'repeating_command_block'
       }.freeze
-      def initialize(command,data_value=0,type=:chain,auto=true,conditional=false)
+      def direction
+        conditional? ? @data_value - 8 : @data_value
+      end
+      def direction=(val)
+        @data_value = val + (conditional? ? 8 : 0)
+      end
+      def initialize(command,type=:chain,data_value=0,auto=true,conditional=false)
         super Types[type], data_value, {
           Command: command.to_s,
-          Auto: auto ? '1b' : '0b'
+          auto: auto
         }
         conditional = conditional
       end

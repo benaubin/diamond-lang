@@ -69,4 +69,4 @@ class HelloWorld < DiamondLang::OneCommand
   end
 end
 
-HelloWorld.create
+HelloWorld.create_not_strict

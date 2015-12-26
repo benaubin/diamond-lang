@@ -26,10 +26,10 @@ module DiamondLang
         [@command, *@arguments].join(" ") + ", success: " + @chain.inspect
       end
       def to_minecart
-        MinecartCommandBlock.new self
+        CommandBlockMinecart.new self
       end
       def to_block(type=:chain)
-        CommandBlock.new type, self
+        CommandBlock.new self, type
       end
     end
   end

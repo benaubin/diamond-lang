@@ -15,27 +15,30 @@ module DiamondLang
       attr_accessor :data
       def initialize(id, data={})
         @id = id
+        data[:Passengers] ||= []
         @data = data
       end
       def passengers
-        data[:passengers]
+        data[:Passengers]
       end
       def passengers=(v)
-        data[:passengers]=(v)
+        data[:Passengers]=(v)
       end
-      def json
-        data = data.dup
-        data.id = @id
+      def to_h
+        data = @data.dup
+        data[:id] = @id
+        data[:Passengers] = data[:Passengers].map{ |passenger| passenger.to_h }
+        data.delete :Passengers if data[:Passengers].empty?
         data
       end
       def summon(coords)
-        data = data.dup
-        data.passengers = data.passengers.map{ |passenger| passenger.json }
-        Command.new 'summon'.freeze, @id, data, coords.to_s
+        data = @data.dup
+        data[:Passengers] = data[:Passengers].map{ |passenger| passenger.to_h }
+        Command.new 'summon'.freeze, @id, coords.to_s, data.to_json
       end
       def selector(args={})
-        args.type = @id
-        TargetSelector.new :e, args
+        args[:type] = @id
+        TargetSelector.new({e: args})
       end
     end
   end
