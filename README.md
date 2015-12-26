@@ -141,7 +141,7 @@ test #=> coords(9, 5, 6)
 ##Coordinate:
 A single coordinate on the x, y, or z axis.
 
-You can run `+` or `-`, which adds/substracts to the coordinate respectivly.
+You can run `+` or `-`, which adds/substracts to the coordinate respectively.
 
 ###Examples:
 
@@ -153,10 +153,11 @@ DiamondLang::Helpers::Coordinate(:x, 6) + 5 #=> 11
 ~~~
 
 ##Conditions:
+*Coming soon!*
 To make commands run on success, attach a block:
 
 ~~~rb
-c.test_for s(a: {r: 10}) do |c|
+c.test_for s(a: {r: 10}) do |c| # conditionals coming soon!
   c.tell s(a: {r: 10}), 'hello'
 end
 #=> Command Block: 						test_for @a[r=10]
@@ -168,7 +169,7 @@ Diamond Lang is just a Ruby framework, so you can have awesome things, like vari
 
 ~~~rb
 close_players = s(a: {r: 10})
-c.test_for close_players do |c|
+c.test_for close_players do |c| # conditionals coming soon!
   c.tell close_players, 'hello'
 end #=> @a[r=10]
 ~~~

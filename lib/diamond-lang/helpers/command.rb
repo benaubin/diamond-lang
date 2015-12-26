@@ -29,7 +29,7 @@ module DiamondLang
         CommandBlockMinecart.new self
       end
       def to_block(type=:chain)
-        CommandBlock.new self, type
+        CommandBlock.new self, type, 0
       end
     end
   end

@@ -5,20 +5,16 @@ module DiamondLang
     end
     def self.create(*args)
       @@instance = self.new(*args)
-      puts @@instance.to_command
-    end
-    def self.create_not_strict(*args)
-      @@instance = self.new(*args)
       puts @@instance.to_command.to_s.gsub(/\\?"(\w+?)\\?":/, '\1:')
     end
-    def initialize(hieght=5, length=6, width=5, offset=coords(2, 2, 0), surrond=Helpers::Block.new('stained_hardened_clay', 13))
-      @height = hieght # y
+    def initialize(height=5, length=6, width=5, offset=coords(2, 2, 0), surrond=Helpers::Block.new('stained_hardened_clay', 13))
+      @height = height # y
       @width = width # z
       @length = (length / 2).floor * 2 # x
-      puts "WARNING: The length of your command block needs to be even. Rounding down to #{@length}." unless length % 2 == 0
-      @offset = offset
+      puts "WARNING: The length of your command block needs to be even. Rounding down to #{@length}." unless length.even?
+      @offset = offset.freeze
       @corner1 = coords("~#{@offset.x}", "~#{@offset.y}", "~#{@offset.z}").freeze
-      @corner2 = coords("~#{@offset.x + @length}", "~#{@offset.y + @height}", "~#{@offset.z + @width}").freeze
+      @corner2 = coords("~#{@offset.x._value + @length}", "~#{@offset.y._value + @height}", "~#{@offset.z._value + @width}").freeze
       @surrond = surrond
     end
     def startup(c)
@@ -35,22 +31,37 @@ module DiamondLang
       tick chain
       commands = chain.commands.map do |command|
         command.to_block
-      end.reverse
-      command_lines = commands.each_slice(@length - 2).each_with_index.map do |line, z|
-        direction = 4 + (z % 2)
-        end_block = line[-1]
-        end_block.direction = direction - 2
-        line[0..-2].map{|command|command.direction = direction}.push end_block
-      end.reverse
-      command_levels = command_lines.each_slice(@width - 2).map do |level|
-        level.last.last.direction = 1 unless level == command_levels.to_a[-1]
-        level
-      end.reverse
+      end
+      command_lines = commands.each_slice(@length - 1).each_with_index.map do |line, z|
+        direction = z.even? ? 5 : 4
+        line.map! do |c|
+          c.direction = direction
+          c
+        end
+      end
+      command_levels = command_lines.each_slice(@width - 1).each_with_index.map do |level, y|
+        level = level.map! do |line|
+          line.last.direction = y.even? ? 3 : 2
+          line
+        end
+        level.last.last.direction = 1
+        level = level.each_with_index.map do |line, z|
+          z.even? ? line : line.reverse
+        end
+        y.even? ? level : level.reverse
+      end
+      command_levels.first.first.first.type = :repeating
       raise Errors::TooSmall if command_levels.to_a.length > (@height - 2)
       command_levels.each_with_index do |level, y|
-        level.each_with_index do |row, z|
-          row.each_with_index do |command, x|
-            c.setblock coords("~#{@offset.x + x - 1}", "~#{@offset.y + y - 1}", "~#{@offset.z + z - 1}"), command.to_s(:replace)
+        level.each_with_index do |line, z|
+          z += @width - 1 - level.length if y.odd?
+          line.each_with_index do |command, x|
+            x += @length - 1 - line.length unless y.odd? == z.odd?
+            c.setblock coords(
+                        "~#{x + @corner1.x._value + 1}",
+                        "~#{y + @corner1.y._value + 1}",
+                        "~#{z + @corner1.z._value + 1}"
+                       ), command.to_s(:replace)
           end
         end
       end
@@ -66,7 +77,7 @@ module DiamondLang
     def to_command
       activator_rail = b('activator_rail').to_falling_sand
       redstone_block = b('redstone_block').to_falling_sand
-      activator_rail.passengers.push(*chain.commands.map{|command| command.to_minecart})
+      activator_rail.passengers.push *chain.to_minecarts
       redstone_block.passengers << activator_rail
       redstone_block.summon coords('~', '~1', '~')
     end

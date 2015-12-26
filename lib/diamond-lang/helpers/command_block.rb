@@ -4,7 +4,7 @@ module DiamondLang
       Types = {
         chain: 'chain_command_block',
         impulse: 'command_block',
-        repeat: 'repeating_command_block'
+        repeating: 'repeating_command_block'
       }.freeze
       def direction
         conditional? ? @data_value - 8 : @data_value

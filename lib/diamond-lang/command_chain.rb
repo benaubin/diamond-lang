@@ -10,5 +10,8 @@ module DiamondLang
     def method_missing(name, *args, &block)
       @commands << Helpers::Command.new(name.to_s.downcase, args, &block)
     end
+    def to_minecarts
+      self.commands.map{|command| command.to_minecart}
+    end
   end
 end

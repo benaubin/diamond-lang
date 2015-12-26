@@ -11,6 +11,10 @@ group :development do
   gem "bundler", "~> 1.0"
   gem "jeweler", "~> 2.0"
   gem "simplecov", "~> 0.11"
+
+  gem "pry", "~> 0.10"
+  gem "pry-doc", "~> 0.8"
+  gem "byebug", "~> 8.2"
 end
 
 gem 'require_all', "~> 1.3"

@@ -11,7 +11,7 @@ module DiamondLang
       def value=(value)
         @value = if value.is_a? Integer
           value
-        elsif value.is_a?(String) && /^(?<rel>~)?(?<number>\d+)?$/ =~ value
+        elsif value.is_a?(String) && /^(?<rel>~)?(?<number>-?\d+)?$/ =~ value
           @relative = rel
           number.to_i
         else
