@@ -67,17 +67,17 @@
 
 <p>First, we'll include diamond lang, so that we can create a command.</p>
 
-<div class="highlight highlight-source-ruby"><pre><span class="pl-k">require_relative</span> <span class="pl-s"><span class="pl-pds">'</span>../diamond_lang<span class="pl-pds">'</span></span> <span class="pl-c"># Requires DiamondLang</span></pre></div>
+<div class="highlight highlight-source-ruby"><pre><span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">'</span>diamond-lang<span class="pl-pds">'</span></span> <span class="pl-c"># Requires DiamondLang</span></pre></div>
 
 <p>Next, we'll create our command. The name of your command should have no spaces, and the start of each word should be capitalized. So, we'll name our "Hello World" command "HelloWorld". It should also extend (<code>&lt;</code>) <code>DiamondLang::OneCommand</code>.</p>
 
-<div class="highlight highlight-source-ruby"><pre><span class="pl-k">require_relative</span> <span class="pl-s"><span class="pl-pds">'</span>../diamond_lang<span class="pl-pds">'</span></span>
+<div class="highlight highlight-source-ruby"><pre><span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">'</span>diamond-lang<span class="pl-pds">'</span></span>
 <span class="pl-k">class</span> <span class="pl-en">HelloWorld<span class="pl-e"> &lt; DiamondLang::OneCommand</span></span>
 <span class="pl-k">end</span></pre></div>
 
 <p>To run a command at setup, create a <code>#setup</code> method:</p>
 
-<div class="highlight highlight-source-ruby"><pre><span class="pl-k">require_relative</span> <span class="pl-s"><span class="pl-pds">'</span>../diamond_lang<span class="pl-pds">'</span></span> <span class="pl-c"># Requires DiamondLang</span>
+<div class="highlight highlight-source-ruby"><pre><span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">'</span>diamond-lang<span class="pl-pds">'</span></span>
 <span class="pl-k">class</span> <span class="pl-en">HelloWorld<span class="pl-e"> &lt; DiamondLang::OneCommand</span></span>
   <span class="pl-k">def</span> <span class="pl-en">setup</span>(<span class="pl-smi">c</span>)
 
@@ -94,7 +94,7 @@
 
 <p>At the end of the code you wrote, run <code>{YourCommandName}.create</code></p>
 
-<div class="highlight highlight-source-ruby"><pre><span class="pl-k">require_relative</span> <span class="pl-s"><span class="pl-pds">'</span>../diamond_lang<span class="pl-pds">'</span></span> <span class="pl-c"># Requires DiamondLang</span>
+<div class="highlight highlight-source-ruby"><pre><span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">'</span>diamond-lang<span class="pl-pds">'</span></span>
 <span class="pl-k">class</span> <span class="pl-en">HelloWorld<span class="pl-e"> &lt; DiamondLang::OneCommand</span></span>
   <span class="pl-k">def</span> <span class="pl-en">setup</span>(<span class="pl-smi">c</span>)
     c.tell <span class="pl-s"><span class="pl-pds">'</span>penne12<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>it worked!<span class="pl-pds">'</span></span> <span class="pl-c">#=&gt; 'tell penne12 it worked!'</span>
@@ -102,7 +102,7 @@
 <span class="pl-k">end</span>
 <span class="pl-c1">HelloWorld</span>.create</pre></div>
 
-<p>to run this code  </p>
+<p>to run your code  </p>
 
 <hr>
 
@@ -162,7 +162,7 @@ test <span class="pl-c">#=&gt; coords(9, 5, 6)</span></pre></div>
 
 <p>A single coordinate on the x, y, or z axis.</p>
 
-<p>You can run <code>+</code> or <code>-</code>, which adds/substracts to the coordinate respectivly.</p>
+<p>You can run <code>+</code> or <code>-</code>, which adds/substracts to the coordinate respectively.</p>
 
 <h3>
 <a id="examples-3" class="anchor" href="#examples-3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples:</h3>
@@ -175,9 +175,10 @@ test <span class="pl-c">#=&gt; coords(9, 5, 6)</span></pre></div>
 <h2>
 <a id="conditions" class="anchor" href="#conditions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Conditions:</h2>
 
-<p>To make commands run on success, attach a block:</p>
+<p><em>Coming soon!</em>
+To make commands run on success, attach a block:</p>
 
-<div class="highlight highlight-source-ruby"><pre>c.test_for s(<span class="pl-c1">a:</span> {<span class="pl-c1">r:</span> <span class="pl-c1">10</span>}) <span class="pl-k">do </span>|<span class="pl-smi">c</span>|
+<div class="highlight highlight-source-ruby"><pre>c.test_for s(<span class="pl-c1">a:</span> {<span class="pl-c1">r:</span> <span class="pl-c1">10</span>}) <span class="pl-k">do </span>|<span class="pl-smi">c</span>| <span class="pl-c"># conditionals coming soon!</span>
   c.tell s(<span class="pl-c1">a:</span> {<span class="pl-c1">r:</span> <span class="pl-c1">10</span>}), <span class="pl-s"><span class="pl-pds">'</span>hello<span class="pl-pds">'</span></span>
 <span class="pl-k">end</span>
 <span class="pl-c">#=&gt; Command Block:                      test_for @a[r=10]</span>
@@ -189,7 +190,7 @@ test <span class="pl-c">#=&gt; coords(9, 5, 6)</span></pre></div>
 <p>Diamond Lang is just a Ruby framework, so you can have awesome things, like variables:</p>
 
 <div class="highlight highlight-source-ruby"><pre>close_players <span class="pl-k">=</span> s(<span class="pl-c1">a:</span> {<span class="pl-c1">r:</span> <span class="pl-c1">10</span>})
-c.test_for close_players <span class="pl-k">do </span>|<span class="pl-smi">c</span>|
+c.test_for close_players <span class="pl-k">do </span>|<span class="pl-smi">c</span>| <span class="pl-c"># conditionals coming soon!</span>
   c.tell close_players, <span class="pl-s"><span class="pl-pds">'</span>hello<span class="pl-pds">'</span></span>
 <span class="pl-k">end</span> <span class="pl-c">#=&gt; @a[r=10]</span></pre></div>
 
