@@ -51,7 +51,7 @@ module DiamondLang
         y.even? ? level : level.reverse
       end
       command_levels.first.first.first.type = :repeating
-      raise Errors::TooSmall if command_levels.to_a.length > (@height - 2)
+      raise Errors::TooSmall if command_levels.to_a.length > (@height - 1)
       command_levels.each_with_index do |level, y|
         level.each_with_index do |line, z|
           z += @width - 1 - level.length if y.odd?
