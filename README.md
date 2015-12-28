@@ -25,7 +25,7 @@ Go to <http://rubyinstaller.org> and download the correct version of Ruby.
 You should have [ruby gems][gems], which allows you to download gems. To install diamond lang, type the following in your terminal:
 
 ~~~sh
-gem DiamondLang
+gem diamond-lang
 ~~~
 
 Now, you're good to go.
