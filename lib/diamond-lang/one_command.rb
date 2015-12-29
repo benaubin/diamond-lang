@@ -7,7 +7,8 @@ module DiamondLang
       @@instance = self.new(*args)
       puts @@instance.to_command.to_s.gsub(/\\?"(\w+?)\\?":/, '\1:')
     end
-    def initialize(height=5, length=6, width=5, offset=coords(2, 2, 0), surrond=Helpers::Block.new('stained_hardened_clay', 13))
+    def initialize(height=5, length=6, width=5, offset=coords(2, 2, 0), surrond=Helpers::Block.new('stained_hardened_clay', 13), output=false)
+      @output = output
       @height = height # y
       @width = width # z
       @length = (length / 2).floor * 2 # x
@@ -97,8 +98,37 @@ module DiamondLang
     def s(*args)
       Helpers::TargetSelector.new(*args)
     end
+    def sp
+      s :p
+    end
+    def s_self
+      s :e, {r: 0, c: 1}
+    end
     def coords(*args)
       Helpers::Coordinates.new(*args)
+    end
+    def relative
+      coords('~', '~', '~')
+    end
+    def colors(color)
+      {
+        white: 0,
+        orange: 1,
+        magenta: 2,
+        light_blue: 3,
+        yellow: 4,
+        lime: 5,
+        pink: 6,
+        grey: 7,
+        light_grey: 8,
+        cyan: 9,
+        purple: 10,
+        blue: 11,
+        brown: 12,
+        green: 13,
+        red: 14,
+        black: 15
+      }.freeze[color]
     end
   end
 end
