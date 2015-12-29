@@ -1,9 +1,10 @@
 require 'diamond-lang'
+require 'json'
 
 class Conveyor < DiamondLang::OneCommand
   def setup(c)
-    c.title s(:a), :subtitle, {"\"text\"" => "command by Ben from bensites.com"}
-    c.title s(:a), :title, {"\"text\"" => "Conveyor Belts"}
+    c.title s(:a), :subtitle, {"text " => "command by Ben from bensites.com"}.to_json
+    c.title s(:a), :title, {"text " => "Conveyor Belts"}.to_json
   end
   def tick(c)
     black_carpet = b 'carpet', colors(:black)

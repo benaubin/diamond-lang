@@ -5,7 +5,7 @@ module DiamondLang
     end
     def self.create(*args)
       @@instance = self.new(*args)
-      puts @@instance.to_command.to_s.gsub(/\\?"(\w+?)\\?":/, '\1:')
+      puts @@instance.to_command.to_s.gsub(/\\?"(\w+?)\\?":/, '\1:').gsub(/(\\?"\w+?)\s(\\?":)/, '\1\2')
     end
     def initialize(height=5, length=6, width=5, offset=coords(2, 2, 0), surrond=Helpers::Block.new('stained_hardened_clay', 13), output=false)
       @output = output
