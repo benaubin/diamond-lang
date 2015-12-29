@@ -38,7 +38,7 @@ module DiamondLang
       end
       def selector(args={})
         args[:type] = @id
-        TargetSelector.new({e: args})
+        TargetSelector.new(:e, args)
       end
     end
   end

@@ -2,9 +2,8 @@ module DiamondLang
   module Helpers
     class TargetSelector
       attr_accessor :arguments
-      def initialize(args)
-        variable, @arguments = args.flatten
-        @variable = "@#{variable}"
+      def initialize(variable, arguments={})
+        @variable, @arguments = "@#{variable}", arguments
       end
       def <<(arguments)
         @arguments = @arguments.merge arguments
