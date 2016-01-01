@@ -29,7 +29,7 @@ module DiamondLang
         if conditional? && !val
           @data_value -= 8
         elsif !@conditional && val
-          @date_value += 8
+          @data_value += 8
         end
       end
       def conditional?(data_value=@data_value)

@@ -17,6 +17,7 @@ module DiamondLang
       @corner1 = coords("~#{@offset.x}", "~#{@offset.y}", "~#{@offset.z}").freeze
       @corner2 = coords("~#{@offset.x._value + @length}", "~#{@offset.y._value + @height}", "~#{@offset.z._value + @width}").freeze
       @surrond = surrond
+      @tick_commands = []
     end
     def startup(c)
       c.gamerule(:commandBlockOutput, @output)
@@ -30,8 +31,17 @@ module DiamondLang
     def create_commands(c)
       chain = CommandChain.new self
       tick chain
-      commands = chain.commands.map do |command|
-        command.to_block
+      commands = @tick_commands
+      chain.commands.each do |command|
+        if command.chain
+          command.chain.each do |con_command|
+            con_command = con_command.to_block
+            con_command.conditional = true
+            commands.push command, con_command
+          end
+        else
+          commands.push command.to_block
+        end
       end
       command_lines = commands.each_slice(@length - 1).each_with_index.map do |line, z|
         direction = z.even? ? 5 : 4
