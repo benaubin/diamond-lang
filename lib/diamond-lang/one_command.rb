@@ -17,7 +17,10 @@ module DiamondLang
       @corner1 = coords("~#{@offset.x}", "~#{@offset.y}", "~#{@offset.z}").freeze
       @corner2 = coords("~#{@offset.x._value + @length}", "~#{@offset.y._value + @height}", "~#{@offset.z._value + @width}").freeze
       @surrond = surrond
+
+      @setup_commands = []
       @tick_commands = []
+      @custom_crafting = nil
     end
     def startup(c)
       c.gamerule(:commandBlockOutput, @output)
@@ -30,14 +33,18 @@ module DiamondLang
     end
     def create_commands(c)
       chain = CommandChain.new self
+      chain.commands.push *@tick_commands
+      if @custom_crafting
+        @custom_crafting.tick chain
+      end
       tick chain
-      commands = @tick_commands
+      commands = []
       chain.commands.each do |command|
         if command.chain
           command.chain.each do |con_command|
             con_command = con_command.to_block
             con_command.conditional = true
-            commands.push command, con_command
+            commands.push command.to_block, con_command
           end
         else
           commands.push command.to_block
@@ -81,6 +88,7 @@ module DiamondLang
       chain = CommandChain.new self
       startup chain
       setup chain
+      chain.commands.push *@setup_commands
       create_commands chain
       cleanup chain
       chain
@@ -139,6 +147,11 @@ module DiamondLang
         red: 14,
         black: 15
       }.freeze[color]
+    end
+    def add_crafting(recipes)
+      chain = CommandChain.new self
+      @custom_crafting = Helpers::CustomCrafting.new(chain, recipes)
+      @setup_commands.push *chain.commands
     end
   end
 end
