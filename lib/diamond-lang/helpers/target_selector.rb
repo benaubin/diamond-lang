@@ -9,10 +9,10 @@ module DiamondLang
         @arguments = @arguments.merge arguments
       end
       def to_s
-        if @arguments
-          @variable + "[" + mc_args + "]"
-        else
+        if @arguments.empty?
           @variable
+        else
+          @variable + "[" + mc_args + "]"
         end
       end
       alias inspect to_s
