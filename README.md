@@ -173,12 +173,6 @@ c.test_for close_players do |c|
 end #=> @a[r=10]
 ~~~
 
-hashes instead of arrays (we flatten the command arguments)
-
-~~~rb
-c.tell penne12: 'something' #=> tell penne12 something
-~~~
-
 string interpolation:
 
 ~~~rb
