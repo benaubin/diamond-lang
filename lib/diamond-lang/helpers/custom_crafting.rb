@@ -36,7 +36,7 @@ module DiamondLang
         c.scoreboard :objectives, :add, :craft_success, :dummy, "Crafting Success:"
       end
       def tick(c)
-        #Blocks
+        c.()
         crafting_table = b('crafting_table')
         stone = b('stone')
 
@@ -50,7 +50,7 @@ module DiamondLang
           :execute, sp, relative, :detect, coords('~1', '~-1', '~1'), stone,
           :execute, sp, relative, :detect, coords('~1', '~-1', '~-1'), stone,
           :execute, sp, relative, :detect, coords('~-1', '~-1', '~-1'), stone,
-          :execute, sp, relative, :detect, coords('~-1', '~-1', '~-1'), stone,
+          :execute, sp, relative, :detect, coords('~-1', '~-1', '~1'), stone,
           :execute, sp, relative, :detect, coords('~', '~-1', '~1'), crafting_table,
           :execute, sp, relative, :detect, coords('~', '~-1', '~-1'), crafting_table,
           :trigger, :on_table, :set, 1
@@ -76,11 +76,21 @@ module DiamondLang
           }
         ]}.to_json
 
+        invalid_players = s(:a, {score_craft_table_min: 1, score_on_table: 0})
+
+        c.tellraw invalid_players, {text: "Please stand on the ", extra: [
+          {text: "Crafting Table Pattern", color: "yellow"},
+          {text: " in order to build the "},
+          {text: "Crafting Table", color: "yellow"},
+          {text: "."}
+        ]}.to_json
+        c.scoreboard :players, :set, invalid_players, :craft_table, 0
+
         #Mark all players who have been asked
         c.scoreboard :players, :set, ask_players, :ask_table, 1
 
         #Get a player that is crafting a table
-        player = s(:a, {score_craft_table_min: 1})
+        player = s(:a, {score_craft_table_min: 1, score_on_table_min: 1, c: 1})
 
         #Tell the player that it is now building the crafting table
         c.tellraw player, {text: "Now building a ", extra: [
@@ -88,11 +98,8 @@ module DiamondLang
           {text: ". Please hold still for a moment..."}
         ]}.to_json
 
-        player << {c: 1}
-
-        #Create the armorstand
         c.testfor player do |c|
-          c.summon 'ArmorStand', relative, "{CustomName:CraftingCreator,Invisible:true}"
+          c.summon 'ArmorStand', relative, "{CustomName:\"CraftingCreator\",Invisible:1b,Invulnerable:1b,PersistenceRequired:1b,NoGravity:1b,Small:1b}"
         end
 
         #Teleport the armorstand one block below the player
@@ -110,16 +117,25 @@ module DiamondLang
 
         #Reset scores for creating crafting table
         c.scoreboard :players, :reset, player, :craft_table
+
         c.scoreboard :players, :set, s(:a), :on_table, 0
 
         #Find Stale Crafting Tables
         crafting_tables = s(:e, {name: "CraftingTable", type: "ArmorStand"})
         c.scoreboard :players, :set, crafting_tables, :ct_has_block, 0
         c.execute crafting_tables, relative, :detect, relative, b("dropper"),
-          :scoreboard, :players, :set, s_self, :ct_has_block, 1
+          :scoreboard, :players, :set, s(:e, {name: "CraftingTable", type: "ArmorStand", c: 1, r: 0}), :ct_has_block, 1
 
-        #Kill Stale Crafting Tables
-        c.kill s(:e, {score_ct_has_block: 0})
+        stale_crafting_tables = s(:e, {name: "CraftingTable", type: "ArmorStand", score_ct_has_block: 0})
+        c.execute stale_crafting_tables, relative, :tellraw, s(:a, {r: 5}), {
+          text: "You destroyed the ", extra: [
+            {text: "Crafting Table", color: "yellow"},
+            {text: "."}
+          ]
+        }.to_json
+        c.kill stale_crafting_tables
+
+        #Add Recipes
         @crafting_recipes.map do |recipe|
           blockItems, resultItems = [recipe[:pattern], recipe[:result]].map do |str|
             str.split('').each_with_index.map do |letter, i|
