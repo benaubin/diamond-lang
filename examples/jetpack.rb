@@ -1,6 +1,6 @@
 require 'diamond-lang'
 
-class CustomCrafting < DiamondLang::OneCommand
+class Jetpack < DiamondLang::OneCommand
   def setup(c)
     c.title s(:a), :subtitle, {"text " => "command by Ben from bensites.com"}.to_json
     c.title s(:a), :title, {"text " => "Jetpack"}.to_json
@@ -29,4 +29,4 @@ class CustomCrafting < DiamondLang::OneCommand
   end
 end
 
-CustomCrafting.create
+Jetpack.create
