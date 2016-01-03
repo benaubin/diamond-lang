@@ -93,6 +93,67 @@ to run your code
 #Helpers
 To make your life easier, we implemented these features to mimic parts of Minecraft, and commonly used idioms:
 
+##Crafting
+Yes! Custom crafting! There's an full example in `examples/custom_crafting.rb`.
+It also works perfectly with more then one one command creation in the world using
+crafting, and the same tables can be used for different recipes from different commands!
+
+
+###Tutorial
+Let's make name tags craftable by putting string in the top right corner, and paper in the middle and the bottom left corner.
+
+First, call `#add_crafting` with an empty array:
+~~~ruby
+add_crafting([])
+~~~
+
+Now, to add a recipe, set the pattern as a 9 character string. Use spaces for blank areas, and letters for items.
+~~~ruby
+add_crafting([{
+  pattern:  "  s"+
+            " p "+
+            "p  "
+}])
+~~~
+
+Now, set the result using the same syntax:
+~~~ruby
+add_crafting([{
+  pattern:  "  s"+
+            " p "+
+            "p  ",
+  result: "   "+
+          " n "+
+          "   "
+}])
+~~~
+
+Now, map the letters to items (as stored in Dropper NBT). Each letter must equal an item, and cannot equal 2 items. 'A' != 'a'
+~~~ruby
+add_crafting([
+  {
+    pattern:  "  s"+
+              " p "+
+              "p  ",
+    result: "   "+
+            " n "+
+            "   ",
+    n: 'id:"minecraft:name_tag",Count:1b',
+    s: 'id:"minecraft:string",Count:1b',
+    p: 'id:"minecraft:paper",Count:1b'
+  }
+])
+~~~
+
+And you're done.
+
+To get the custom crafting table:
+1. Create a plus-shape of crafting tables on the ground
+2. Fill in the corners with stone
+3. Stand on the middle crafting table
+4. Click the underlined "Crafting Table" in chat when asked.
+5. Use the dropper, and enjoy your recipe.
+
 ##Commands
 Commands are attached to a chain (`c`), and arguments are separated with commas (`,`):
 
